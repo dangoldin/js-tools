@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JavaScript Tools</title>
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+    <header class="jumbotron subhead">
+      <div class="container">
+        <h1>JavaScript Tools</h1>
+      </div>
+    </header>
+
+    <div class="container">
+
+      <div class="row"><!-- Table Generation -->
+        <div class="span12">
+          <section id="table-generation">
+            <h3>Convert CSV to Bootstrap Table</h3>
+            <div class="row">
+              <div class="span4">
+                <form id="id-form-table-conversion">
+                  <fieldset>
+                    <textarea id="id-textarea" rows="6" class="field span4" placeholder="Paste text here"></textarea>
+
+                    <label class="checkbox">
+                      <input type="checkbox" id="id-checkbox" checked> Has Header
+                    </label>
+
+                    <label class="radio">
+                      <input type="radio" name="radio-delimiter" id="radio-delimiter-comma" value="comma" checked>
+                      Comma Delimited
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="radio-delimiter" id="radio-delimiter-tab" value="tab">
+                      Tab Delimited
+                    </label>
+                    <label class="radio">
+                      <input type="radio" name="radio-delimiter" id="radio-delimiter-space" value="space">
+                      Space Delimited
+                    </label>
+
+                    <button type="submit" class="btn" id="id-submit">Convert!</button>
+                  </fieldset>
+                </form>
+              </div>
+
+              <div class="span8" style="display:none" id="id-table-generation-out">
+                <h4>Generated Table:</h4>
+                <div id="id-table">
+                </div>
+
+                <h4>Generated Table HTML:</h4>
+                <div id="id-table-code">
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div><!-- Table Generation -->
+
+      <div class="row">
+        <div class="span12">
+          <section id="bcg-matrix-generation">
+            <h3>Create a BCG Matrix</h3>
+            <p>Enter coordinates from -10 to +10</p>
+            <div class="row">
+              <div class="span4">
+                <form id="id-form-bcg-matrix">
+                  <!-- <div class="controls controls-row">
+                    <input type="text" placeholder="min x" class="span1" id="id-min-x" value="10">
+                    <input type="text" placeholder="max x" class="span1" id="id-max-x" value="10">
+                  </div>
+
+                  <div class="controls controls-row">
+                    <input type="text" placeholder="min y" class="span1" id="id-min-y">
+                    <input type="text" placeholder="max y" class="span1" id="id-max-y">
+                  </div>
+ -->
+                  <div class="controls controls-row bcg-row">
+                    <input type="text" placeholder="x coord" class="span1 bcg-x-coord" />
+                    <input type="text" placeholder="y coord" class="span1 bcg-y-coord" />
+                    <input type="text" placeholder="label" class="span1 bcg-label" />
+                    <a href="#" class="btn btn-link remove-bcg-row">&times;</a>
+                  </div>
+
+                  <div class="controls controls-row">
+                    <a href="#" class="btn btn-link add-bcg-row">&plus; Add Row</a>
+                    <a href="#" class="btn generate-bcg">Generate Matrix</a>
+                  </div>
+                </form>
+              </div>
+              <div class="span8">
+                <div id="id-bcg-matrix">
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="container" style="margin-bottom:140px">
+      </div>
+    </footer>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="static/js/bootstrap.js"></script>
+    <script src="static/js/js-tools-0.1.js"></script>
+
+    <script>
+      function drawBCG(points) {
+        d3.select("svg").remove();
+
+        var svg = d3.select("#id-bcg-matrix").append("svg")
+          .attr("width", 600)
+          .attr("height", 600);
+
+        svg.append("line")
+          .attr("x1", 300)
+          .attr("y1", 0)
+          .attr("x2", 300)
+          .attr("y2", 600)
+          .attr("stroke-width", 2)
+          .attr("stroke", "black");
+
+        svg.append("line")
+          .attr("x1", 0)
+          .attr("y1", 300)
+          .attr("x2", 600)
+          .attr("y2", 300)
+          .attr("stroke-width", 2)
+          .attr("stroke", "black");
+
+        for (var i = 0; i < points.length; i++) {
+          var point = points[i];
+          var text = svg.append("text")
+            .attr("x", point.x + 2)
+            .attr("y", point.y - 2)
+            .text(point.label)
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "20px")
+            .attr("fill", "black");
+        };
+      };
+
+      // svg.on('click', function() {
+      //   var m = d3.mouse(this);
+      //   svg.append("circle")
+      //     .attr("cx", m[0])
+      //     .attr("cy", m[1])
+      //     .attr("r", 2);
+
+      //   var text = svg.append("text")
+      //     .attr("x", m[0] + 2)
+      //     .attr("y", m[1] - 2)
+      //     .text("Hello")
+      //     .attr("font-family", "sans-serif")
+      //     .attr("font-size", "20px")
+      //     .attr("fill", "black");
+
+      //   text.on('click', function() {
+      //     console.log('Inner click!');
+      //     d3.event.stopPropagation();
+      //   });
+      // });
+
+      $('a.add-bcg-row').click(function(){
+        $('.bcg-row:last').after(
+          '<div class="controls controls-row bcg-row">' +
+            '<input type="text" placeholder="x coord" class="span1 bcg-x-coord" />' +
+            '<input type="text" placeholder="y coord" class="span1 bcg-y-coord" />' +
+            '<input type="text" placeholder="label" class="span1 bcg-label" />' +
+            '<a href="#" class="btn btn-link">&times;</a>' +
+          '</div>');
+        return false;
+      });
+
+      $('a.remove-bcg-row').click(function(){
+        if ($('.bcg-row').length > 1) {
+          $(this).parents('.bcg-row').remove();
+        };
+        return false;
+      });
+
+      $('.generate-bcg').click(function(){
+        var slope = 30,
+            intercept = 300,
+            points = $('.bcg-row').map(function() {
+              var x = $(this).find('.bcg-x-coord').val(),
+                  y = $(this).find('.bcg-y-coord').val(),
+                  l = $(this).find('.bcg-label').val();
+              console.log(x + ' ' + y + ' ' + l);
+              return {x: x * slope + intercept, y: -1 * y * slope + intercept, label:l};
+            });
+        drawBCG(points);
+        return false;
+      });
+
+    </script>
+  </body>
+</html>
