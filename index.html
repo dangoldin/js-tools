@@ -12,12 +12,15 @@
       </div>
     </header>
 
+    <hr/>
+
     <div class="container">
 
       <div class="row"><!-- Table Generation -->
         <div class="span12">
           <section id="table-generation">
             <h3>Convert CSV to Bootstrap Table</h3>
+            <p>Enter text into the textarea and then choose the settings to generate the HTML for a Bootstrap table</p>
             <div class="row">
               <div class="span4">
                 <form id="id-form-table-conversion">
@@ -60,11 +63,13 @@
         </div>
       </div><!-- Table Generation -->
 
+      <hr/>
+
       <div class="row">
         <div class="span12">
           <section id="bcg-matrix-generation">
             <h3>Create a BCG Matrix</h3>
-            <p>Enter coordinates from -10 to +10</p>
+            <p>This helps create a "growth-share" matrix popularzized by BCG. Enter coordinates from -10 to +10 and a label for the plotted value.</p>
             <div class="row">
               <div class="span4">
                 <form id="id-form-bcg-matrix">
@@ -87,6 +92,9 @@
 
                   <div class="controls controls-row">
                     <a href="#" class="btn btn-link add-bcg-row">&plus; Add Row</a>
+                  </div>
+
+                  <div class="controls controls-row">
                     <a href="#" class="btn generate-bcg">Generate Matrix</a>
                   </div>
                 </form>
