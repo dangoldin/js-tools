@@ -1,3 +1,5 @@
+// From http://stackoverflow.com/questions/1293147/javascript-code-to-parse-csv-data
+
 function CSVToArray( strData, strDelimiter ){
 	// Check to see if the delimiter is defined. If not,
 	// then default to comma.
