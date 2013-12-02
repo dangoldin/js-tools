@@ -102,10 +102,11 @@ $(document).ready(function(){
 			var row = data[i];
 			table += '<tr>';
 			for (var j = 0; j < row.length; j++) {
+				var val = row[j].replace(/& /g, '&amp; ');
 				if (has_header && i == 0) {
-					table += '<th>' + row[j] + '</th>';
+					table += '<th>' + val + '</th>';
 				} else {
-					table += '<td>' + row[j] + '</td>';
+					table += '<td>' + val + '</td>';
 				}
 			}
 			table += '</tr>';
