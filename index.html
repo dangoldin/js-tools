@@ -18,95 +18,129 @@
 
     <div class="container">
 
-      <div class="row"><!-- Table Generation -->
-        <div class="span12">
-          <section id="table-generation">
-            <h3>Convert CSV to Bootstrap Table</h3>
-            <p>Enter text into the textarea and then choose the settings to generate the HTML for a Bootstrap table</p>
-            <div class="row">
-              <div class="span4">
-                <form id="id-form-table-conversion">
-                  <fieldset>
-                    <textarea id="id-textarea" rows="6" class="field span4" placeholder="Paste text here"></textarea>
+      <div class="tabbable"> <!-- Only required for left/right tabs -->
+        <ul class="nav nav-tabs" id="nav-tabs">
+          <li class="active"><a href="#tab1" data-toggle="tab">CSV to Bootstrap Table</a></li>
+          <li><a href="#tab2" data-toggle="tab">Bulk Geocoding</a></li>
+          <li><a href="#tab3" data-toggle="tab">"BCG Style" Matrix</a></li>
+        </ul>
 
-                    <label class="checkbox">
-                      <input type="checkbox" id="id-checkbox" checked> Has Header
-                    </label>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab1">
+            <div class="row"><!-- Table Generation -->
+              <div class="span12">
+                <section id="table-generation">
+                  <h3>Convert CSV to Bootstrap Table</h3>
+                  <p>Enter text into the textarea and then choose the settings to generate the HTML for a Bootstrap table</p>
+                  <div class="row">
+                    <div class="span4">
+                      <form id="id-form-table-conversion">
+                        <fieldset>
+                          <textarea id="id-textarea" rows="6" class="field span4" placeholder="Paste text here"></textarea>
 
-                    <label class="radio">
-                      <input type="radio" name="radio-delimiter" id="radio-delimiter-comma" value="comma" checked>
-                      Comma Delimited
-                    </label>
-                    <label class="radio">
-                      <input type="radio" name="radio-delimiter" id="radio-delimiter-tab" value="tab">
-                      Tab Delimited
-                    </label>
-                    <label class="radio">
-                      <input type="radio" name="radio-delimiter" id="radio-delimiter-space" value="space">
-                      Space Delimited
-                    </label>
+                          <label class="checkbox">
+                            <input type="checkbox" id="id-checkbox" checked> Has Header
+                          </label>
 
-                    <button type="submit" class="btn" id="id-submit">Convert!</button>
-                  </fieldset>
-                </form>
+                          <label class="radio">
+                            <input type="radio" name="radio-delimiter" id="radio-delimiter-comma" value="comma" checked>
+                            Comma Delimited
+                          </label>
+                          <label class="radio">
+                            <input type="radio" name="radio-delimiter" id="radio-delimiter-tab" value="tab">
+                            Tab Delimited
+                          </label>
+                          <label class="radio">
+                            <input type="radio" name="radio-delimiter" id="radio-delimiter-space" value="space">
+                            Space Delimited
+                          </label>
+
+                          <button type="submit" class="btn" id="id-submit">Convert!</button>
+                        </fieldset>
+                      </form>
+                    </div>
+
+                    <div class="span8" style="display:none" id="id-table-generation-out">
+                      <h4>Generated Table:</h4>
+                      <div id="id-table">
+                      </div>
+
+                      <h4>Generated Table HTML:</h4>
+                      <div id="id-table-code">
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </div>
+            </div><!-- Table Generation -->
+          </div>
 
-              <div class="span8" style="display:none" id="id-table-generation-out">
-                <h4>Generated Table:</h4>
-                <div id="id-table">
-                </div>
+          <div class="tab-pane" id="tab2">
+            <div class="row">
+              <div class="span12">
+                <section id="bulk-geocoding">
+                  <h3>Bulk geocoding</h3>
+                  <p>Enter addresses into the textarea below, one per line</p>
+                  <div class="row">
+                    <div class="span4">
+                      <form id="id-form-bulk-geocoding">
+                        <fieldset>
+                          <textarea id="id-bulk-geocoding-textarea" rows="6" class="field span4" placeholder="Enter addresses here, one per line"></textarea>
+                          <a href="#" class="btn" id="id-submit-geocoding">Geocode!</a>
+                        </fieldset>
+                      </form>
+                    </div>
 
-                <h4>Generated Table HTML:</h4>
-                <div id="id-table-code">
-                </div>
+                    <div class="span8">
+                      <table class="table" id="geocode-results">
+                        <thead>
+                          <th>Address</th><th>Lat</th><th>Lng</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </section>
               </div>
             </div>
-          </section>
-        </div>
-      </div><!-- Table Generation -->
+          </div>
 
-      <hr/>
-
-      <div class="row">
-        <div class="span12">
-          <section id="bcg-matrix-generation">
-            <h3>Create a BCG Matrix</h3>
-            <p>This helps create a "growth-share" matrix popularzized by BCG. Enter coordinates from -10 to +10 and a label for the plotted value.</p>
+          <div class="tab-pane" id="tab3">
             <div class="row">
-              <div class="span4">
-                <form id="id-form-bcg-matrix">
-                  <!-- <div class="controls controls-row">
-                    <input type="text" placeholder="min x" class="span1" id="id-min-x" value="10">
-                    <input type="text" placeholder="max x" class="span1" id="id-max-x" value="10">
-                  </div>
+              <div class="span12">
+                <section id="bcg-matrix-generation">
+                  <h3>Create a BCG Matrix</h3>
+                  <p>This helps create a "growth-share" matrix popularzized by BCG. Enter coordinates from -10 to +10 and a label for the plotted value.</p>
+                  <div class="row">
+                    <div class="span4">
+                      <form id="id-form-bcg-matrix">
+                        <div class="controls controls-row bcg-row">
+                          <input type="text" placeholder="x coord" class="span1 bcg-x-coord" />
+                          <input type="text" placeholder="y coord" class="span1 bcg-y-coord" />
+                          <input type="text" placeholder="label" class="span1 bcg-label" />
+                          <a href="#" class="btn btn-link remove-bcg-row">&times;</a>
+                        </div>
 
-                  <div class="controls controls-row">
-                    <input type="text" placeholder="min y" class="span1" id="id-min-y">
-                    <input type="text" placeholder="max y" class="span1" id="id-max-y">
-                  </div>
- -->
-                  <div class="controls controls-row bcg-row">
-                    <input type="text" placeholder="x coord" class="span1 bcg-x-coord" />
-                    <input type="text" placeholder="y coord" class="span1 bcg-y-coord" />
-                    <input type="text" placeholder="label" class="span1 bcg-label" />
-                    <a href="#" class="btn btn-link remove-bcg-row">&times;</a>
-                  </div>
+                        <div class="controls controls-row">
+                          <a href="#" class="btn btn-link add-bcg-row">&plus; Add Row</a>
+                        </div>
 
-                  <div class="controls controls-row">
-                    <a href="#" class="btn btn-link add-bcg-row">&plus; Add Row</a>
+                        <div class="controls controls-row">
+                          <a href="#" class="btn generate-bcg">Generate Matrix</a>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="span8">
+                      <div id="id-bcg-matrix">
+                      </div>
+                    </div>
                   </div>
-
-                  <div class="controls controls-row">
-                    <a href="#" class="btn generate-bcg">Generate Matrix</a>
-                  </div>
-                </form>
-              </div>
-              <div class="span8">
-                <div id="id-bcg-matrix">
-                </div>
+                </section>
               </div>
             </div>
-          </section>
+          </div>
+
         </div>
       </div>
     </div>
@@ -117,44 +151,16 @@
     </footer>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
     <script src="static/js/bootstrap.js"></script>
     <script src="static/js/js-tools-0.1.js"></script>
 
     <script>
-      function drawBCG(points) {
-        d3.select("svg").remove();
-
-        var svg = d3.select("#id-bcg-matrix").append("svg")
-          .attr("width", 600)
-          .attr("height", 600);
-
-        svg.append("line")
-          .attr("x1", 300)
-          .attr("y1", 0)
-          .attr("x2", 300)
-          .attr("y2", 600)
-          .attr("stroke-width", 2)
-          .attr("stroke", "black");
-
-        svg.append("line")
-          .attr("x1", 0)
-          .attr("y1", 300)
-          .attr("x2", 600)
-          .attr("y2", 300)
-          .attr("stroke-width", 2)
-          .attr("stroke", "black");
-
-        for (var i = 0; i < points.length; i++) {
-          var point = points[i];
-          var text = svg.append("text")
-            .attr("x", point.x + 2)
-            .attr("y", point.y - 2)
-            .text(point.label)
-            .attr("font-family", "sans-serif")
-            .attr("font-size", "20px")
-            .attr("fill", "black");
-        };
-      };
+    $('#nav-tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    })
 
       // svg.on('click', function() {
       //   var m = d3.mouse(this);
@@ -183,12 +189,12 @@
             '<input type="text" placeholder="x coord" class="span1 bcg-x-coord" />' +
             '<input type="text" placeholder="y coord" class="span1 bcg-y-coord" />' +
             '<input type="text" placeholder="label" class="span1 bcg-label" />' +
-            '<a href="#" class="btn btn-link">&times;</a>' +
+            '<a href="#" class="btn btn-link remove-bcg-row">&times;</a>' +
           '</div>');
         return false;
       });
 
-      $('a.remove-bcg-row').click(function(){
+      $('#id-form-bcg-matrix').on('click', 'a.remove-bcg-row', function(){
         if ($('.bcg-row').length > 1) {
           $(this).parents('.bcg-row').remove();
         };
@@ -206,6 +212,33 @@
               return {x: x * slope + intercept, y: -1 * y * slope + intercept, label:l};
             });
         drawBCG(points);
+        return false;
+      });
+
+      var geocoder = new google.maps.Geocoder();
+
+      $('#id-submit-geocoding').click(function() {
+        var addrs = $('#id-bulk-geocoding-textarea').val().split("\n");
+        console.log(addrs);
+
+        for (var i = 0; i < addrs.length; i++) {
+          (function() {
+            var addr = addrs[i];
+            geocoder.geocode( { 'address': addr}, function(results, status) {
+              if (status == google.maps.GeocoderStatus.OK) {
+                var
+                  location = results[0].geometry.location;
+                  rowHTML = '<tr><td>' + addr + '</td><td>' + location.lat() + '</td><td>' + location.lng() + '</td></tr>';
+
+                $('#geocode-results > tbody').append(rowHTML);
+              } else {
+                console.log("Error looking up address" + addr);
+                alert("Geocode was not successful for the following reason: " + status);
+              }
+            });
+          })();
+        };
+
         return false;
       });
 
