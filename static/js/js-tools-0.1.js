@@ -71,8 +71,6 @@ function CSVToArray( strData, strDelimiter ){
 }
 
 $(document).ready(function(){
-  console.log('Ready!');
-
   $('#id-form-table-conversion').submit(function(event){
     var content = $('#id-textarea').val(),
         has_header = $('#id-checkbox').is(':checked'),
@@ -165,3 +163,24 @@ function drawBCG(points) {
   };
 };
 
+function randomDate(start, end) {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
+
+function randomInt(min, max) {
+  return Math.floor(randomReal(min,max));
+}
+
+function randomReal(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function randomString(len) {
+  var all_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 ';
+  var all_chars_length = all_chars.length;
+  var out = '';
+  for (var i = 0; i < len; i++) {
+    out += all_chars.charAt(Math.floor(Math.random()*all_chars_length));
+  }
+  return out;
+}
