@@ -218,6 +218,10 @@
                           <a href="#" class="btn generate-dates">Generate Dates</a>
                         </div>
                       </form>
+
+                      <div class="span4">
+                        Note that the date formats are based on the extremely helpful <a href="https://github.com/phstc/jquery-dateFormat" target="_blank">jquery-dateFormat library</a>. As an example, try "yyyy-MM-dd".
+                      </div>
                     </div>
                     <div class="span8">
                       <div id="id-gen-dates">
@@ -243,6 +247,7 @@
 
     <script src="static/js/bootstrap.js"></script>
     <script src="static/js/date.js"></script>
+    <script src="static/js/jquery-dateFormat.min.js"></script>
     <script src="static/js/js-tools-0.1.js"></script>
 
     <script>
@@ -426,16 +431,11 @@
 
         var outHTML = '';
         while (start < end) {
-          outHTML += formatDate(start, date_fmt) + "<br/>";
+          outHTML += $.format.date(start, date_fmt) + "<br/>";
           start = new Date( start.getTime() + step_val );
         }
         $('#id-gen-dates').html(outHTML);
       });
-
-      var formatDate = function (date, format) {
-        // TODO - actually support formats
-        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-      }
 
       // Bulk geocoding
       var geocoder = new google.maps.Geocoder();
