@@ -20,10 +20,13 @@
 
       <div class="tabbable"> <!-- Only required for left/right tabs -->
         <ul class="nav nav-tabs" id="nav-tabs">
-          <li class="active"><a href="#tab-csv" data-toggle="tab">CSV to Bootstrap Table</a></li>
+          <li class="active">
+            <a href="#tab-csv" data-toggle="tab">CSV to Bootstrap Table</a>
+          </li>
           <li><a href="#tab-bulk-geocoding" data-toggle="tab">Bulk Geocoding</a></li>
           <li><a href="#tab-bcg-matrix" data-toggle="tab">"BCG Style" Matrix</a></li>
           <li><a href="#tab-sql-data" data-toggle="tab">SQL Data Generation</a></li>
+          <li><a href="#tab-date-generation" data-toggle="tab">Date Generation</a></li>
         </ul>
 
         <div class="tab-content">
@@ -177,6 +180,47 @@
                     </div>
                     <div class="span8">
                       <div id="id-sql-rows">
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-date-generation">
+            <div class="row">
+              <div class="span12">
+                <section id="sql-date-generation">
+                  <h3>Date Generation</h3>
+                  <p>Use this to create a series of dates based on a step size, a start, an end, and a desired format.</p>
+                  <div class="row">
+                    <div class="span4">
+                      <form id="id-form-date-generation">
+                        <div class="controls controls-row">
+                          <input type="text" placeholder="start date" class="span2" id="id-date-gen-start" />
+                          <input type="text" placeholder="end date" class="span2" id="id-date-gen-end" />
+                        </div>
+                        <div class="controls controls-row">
+                          <select class="span2" id="id-date-gen-step-type">
+                            <option value="minute">Minute</option>
+                            <option value="hour">Hour</option>
+                            <option value="day">Day</option>
+                            <option value="week">Day</option>
+                          </select>
+                          <input type="text" placeholder="step value" class="span2" id="id-date-gen-step-value" />
+                        </div>
+                        <div class="controls controls-row">
+                          <input type="text" placeholder="format" class="span2" id="id-date-gen-format" />
+                        </div>
+
+                        <div class="controls controls-row">
+                          <a href="#" class="btn generate-dates">Generate Dates</a>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="span8">
+                      <div id="id-gen-dates">
                       </div>
                     </div>
                   </div>
@@ -352,6 +396,46 @@
 
         return false;
       });
+
+      $('.generate-dates').click(function() {
+        $('#id-gen-dates').html('');
+
+        var start = new Date($('#id-date-gen-start').val()),
+            end   = new Date($('#id-date-gen-end').val()),
+            step_type = $('#id-date-gen-step-type').val(),
+            step_val  = $('#id-date-gen-step-value').val(),
+            date_fmt  = $('#id-date-gen-format').val();
+
+        start.setTime( start.getTime() + start.getTimezoneOffset() * 60 * 1000 );
+        end.setTime( end.getTime() + end.getTimezoneOffset() * 60 * 1000 );
+
+        switch (step_type) {
+          case 'minute':
+            step_val *= 60 * 1000;
+            break;
+          case 'hour':
+            step_val *= 60 * 60 * 1000;
+            break;
+          case 'day':
+            step_val *= 24 * 60 * 60 * 1000;
+            break;
+          case 'week':
+            step_val *= 7 * 24 * 60 * 60 * 1000;
+            break;
+        }
+
+        var outHTML = '';
+        while (start < end) {
+          outHTML += formatDate(start, date_fmt) + "<br/>";
+          start = new Date( start.getTime() + step_val );
+        }
+        $('#id-gen-dates').html(outHTML);
+      });
+
+      var formatDate = function (date, format) {
+        // TODO - actually support formats
+        return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+      }
 
       // Bulk geocoding
       var geocoder = new google.maps.Geocoder();
