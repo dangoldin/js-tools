@@ -29,6 +29,7 @@
           <li><a href="#tab-bcg-matrix" data-toggle="tab">"BCG Style" Matrix</a></li>
           <li><a href="#tab-sql-data" data-toggle="tab">SQL Data Generation</a></li>
           <li><a href="#tab-sql-schema-comparison" data-toggle="tab">SQL Schema Comparison</a></li>
+          <li><a href="#tab-sql-query-formatter" data-toggle="tab">SQL Query Formatter</a></li>
           <li><a href="#tab-date-generation" data-toggle="tab">Date Generation</a></li>
         </ul>
 
@@ -196,7 +197,7 @@
               <div class="span12">
                 <section id="sql-date-generation">
                   <h3>SQL Schema Comparison</h3>
-                  <p>Past the result of a schema information query in each tab and get the result. The text areas expect three tab delimited columns: schema name, table name, and column name. The result will do a JSON diff using the awesome <a href="https://github.com/benjamine/jsondiffpatch" target="_blank">jsondiffpatch</a> library.</p>
+                  <p>Paste the result of a schema information query in each tab and get the result. The text areas expect three tab delimited columns: schema name, table name, and column name. The result will do a JSON diff using the awesome <a href="https://github.com/benjamine/jsondiffpatch" target="_blank">jsondiffpatch</a> library.</p>
                   <p>
                   Note: In both MySQL and PostgreSQL you can get the schema information using "select table_schema, table_name, column_name from information_schema.columns" and applying the relevant filters.
                   </p>
@@ -204,8 +205,8 @@
                     <div class="span12">
                       <form id="id-form-sql-schema-generation">
                         <div class="controls controls-row">
-                          <textarea id="id-sql-schema-1" rows="6" class="field span6" placeholder="Paste a schema dump here"></textarea>
-                          <textarea id="id-sql-schema-2" rows="6" class="field span6" placeholder="Paste another schema dump here"></textarea>
+                          <textarea id="id-sql-schema-1" rows="10" class="field span6" placeholder="Paste a schema dump here"></textarea>
+                          <textarea id="id-sql-schema-2" rows="10" class="field span6" placeholder="Paste another schema dump here"></textarea>
                         </div>
 
                         <div class="controls controls-row">
@@ -220,6 +221,37 @@
             <div class="row">
               <div class="span12">
                 <div id="compare-schema-results">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-sql-query-formatter">
+            <div class="row">
+              <div class="span12">
+                <section id="sql-query-formatter">
+                  <h3>SQL Query Formatter</h3>
+                  <p>Paste a Java formatted query and hit "Clean" to get it cleaned up.
+                  </p>
+                  <div class="row">
+                    <div class="span12">
+                      <form id="id-form-sql-query-formatter">
+                        <div class="controls controls-row">
+                          <textarea id="id-sql-query-formatter" rows="10" class="field span6" placeholder="Place query to format here"></textarea>
+                        </div>
+
+                        <div class="controls controls-row">
+                          <a href="#" class="btn sql-format-query" id="id-format-query">Format!</a>
+                        </div>
+                      </form>
+                    </div>
+                </section>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="span12">
+                <div id="sql-query-format-results">
                 </div>
               </div>
             </div>
@@ -542,6 +574,16 @@
         return false;
       });
 
+    $('#id-format-query').click(function() {
+      var str = $('#id-sql-query-formatter').val().replace("\n", " "),
+          pieces = str.split('/\s+\+\s+/');
+
+      for (var i = 0; i < pieces.length; i++) {
+        pieces[i] = pieces[i].replace('"','');
+      }
+
+      $('#sql-query-format-results').html(pieces.join(' '));
+    });
     </script>
   </body>
 </html>
