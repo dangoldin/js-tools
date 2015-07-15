@@ -575,14 +575,16 @@
       });
 
     $('#id-format-query').click(function() {
-      var str = $('#id-sql-query-formatter').val().replace("\n", " "),
-          pieces = str.split('/\s+\+\s+/');
+      var str = $('#id-sql-query-formatter').val().replace(/\\n/g, "<br/>"),
+          pieces = str.split(/\s*\+\s*/);
 
       for (var i = 0; i < pieces.length; i++) {
-        pieces[i] = pieces[i].replace('"','');
+        pieces[i] = pieces[i].replace(/"/g,'');
       }
 
       $('#sql-query-format-results').html(pieces.join(' '));
+
+      return false;
     });
     </script>
   </body>
