@@ -31,6 +31,7 @@
           <li><a href="#tab-sql-schema-comparison" data-toggle="tab">SQL Schema Comparison</a></li>
           <li><a href="#tab-sql-query-formatter" data-toggle="tab">SQL Query Formatter</a></li>
           <li><a href="#tab-date-generation" data-toggle="tab">Date Generation</a></li>
+          <li><a href="#tab-kafka-partition-diff" data-toggle="tab">Kafka Partition Diff</a></li>
         </ul>
 
         <div class="tab-content">
@@ -298,6 +299,37 @@
                     </div>
                   </div>
                 </section>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tab-kafka-partition-diff">
+            <div class="row">
+              <div class="span12">
+                <section id="kafka-partition-diff">
+                  <h3>Kafka Partition Diff</h3>
+                  <p>Paste the result of a Kafka partition dump in each tab and get the result.The result will do a JSON diff using the awesome <a href="https://github.com/benjamine/jsondiffpatch" target="_blank">jsondiffpatch</a> library.</p>                  
+                  <div class="row">
+                    <div class="span12">
+                      <form id="id-form-kafka-partition-diff">
+                        <div class="controls controls-row">
+                          <textarea id="id-kafka-partition-1" rows="10" class="field span6" placeholder="Paste a Kafka partition dump here"></textarea>
+                          <textarea id="id-kafka-partition-2" rows="10" class="field span6" placeholder="Paste another Kafka partition dump here"></textarea>
+                        </div>
+
+                        <div class="controls controls-row">
+                          <a href="#" class="btn compare-kafka-partitions" id="id-compare-kafka-partition">Compare!</a>
+                        </div>
+                      </form>
+                    </div>
+                </section>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="span12">
+                <div id="compare-kafka-partition-results">
+                </div>
               </div>
             </div>
           </div>
@@ -586,6 +618,40 @@
 
       return false;
     });
+
+    $('#id-compare-kafka-partition').click(function() {
+      var getOrCreate = function(obj, key) {
+        if (!(key in obj)) {
+          obj[key] = {};
+        }
+        return obj[key];
+      };
+
+      var loadPartitionData = function(str) {
+        var s = JSON.parse(str);
+        // Sort s.partitions by topic name and partition number
+        s.partitions.sort((a, b) => (a.topic + a.partition > b.topic + b.partition) ? 1 : -1)
+        return s;
+      };
+
+      var schema1 = $('#id-kafka-partition-1').val(),
+          schema2 = $('#id-kafka-partition-2').val();
+      var s1 = loadPartitionData(schema1);
+      var s2 = loadPartitionData(schema2);
+      var diffs = jsondiffpatch.diff(s1, s2);
+
+      // Show the diffs and hide the same values
+      jsondiffpatch.formatters.html.hideUnchanged();
+
+      if (diffs) {
+        $('#compare-kafka-partition-results').html( jsondiffpatch.formatters.html.format(diffs, s1) );
+      } else {
+        $('#compare-kafka-partition-results').html( 'No differences.' );
+      }
+
+      return false;
+    });
+
     </script>
   </body>
 </html>
